@@ -49,5 +49,25 @@ namespace LanguageFeatures.Controllers
 
             return View("Result", (object)stringArray[1]);
         }
+
+        /// <summary>
+        /// 확장메서드 사용!
+        /// </summary>
+        /// <returns></returns>
+        public ViewResult UseExtension() {
+            ShoppingCart cart = new ShoppingCart
+            {
+                Products = new List<Product> {
+                    new Product {Name = "kim", Price = 200M },
+                    new Product {Name = "Lee", Price = 200M },
+                    new Product {Name = "Park", Price = 200M },
+                    new Product {Name = "Han", Price = 200M }
+                }
+            };
+
+            decimal cartTotal = cart.TotalPrices();
+
+            return View("Result", (object)String.Format("Total: {0:c}", cartTotal));
+        }
     }
 }
