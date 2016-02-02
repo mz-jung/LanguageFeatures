@@ -69,5 +69,57 @@ namespace LanguageFeatures.Controllers
 
             return View("Result", (object)String.Format("Total: {0:c}", cartTotal));
         }
+
+        /// <summary>
+        /// 인터페이스에 확장메서드 적용
+        /// </summary>
+        /// <returns></returns>
+        public ViewResult UseExtensionEnumerable() {
+
+            IEnumerable<Product> products = new ShoppingCart
+            {
+                Products = new List<Product> {
+                    new Product {Name = "kim", Price = 200M },
+                    new Product {Name = "Lee", Price = 200M },
+                    new Product {Name = "Park", Price = 200M },
+                    new Product {Name = "Han", Price = 200M }
+                }
+            };
+
+            Product[] productArray = {
+                new Product {Name = "kim", Price = 200M },
+                new Product {Name = "Lee", Price = 200M },
+                new Product {Name = "Park", Price = 200M },
+                new Product {Name = "Han", Price = 200M }
+            };
+
+            decimal cartTotal = products.TotalPrices();
+            decimal arrayTotal = productArray.TotalPrices();
+
+            return View("Result", (object)String.Format("Cart Total: {0}, Array Total: {1}", cartTotal, arrayTotal));
+        }
+
+        /// <summary>
+        /// 필터링 확장 메서드 사용
+        /// </summary>
+        /// <returns></returns>
+        public ViewResult UseFilterExtensionMethod() {
+            IEnumerable<Product> products = new ShoppingCart
+            {
+                Products = new List<Product> {
+                    new Product {Name = "kim", Price = 100M, Category = "A" },
+                    new Product {Name = "Lee", Price = 200M , Category = "B"},
+                    new Product {Name = "Park", Price = 300M , Category = "A"},
+                    new Product {Name = "Han", Price = 400M , Category = "C" }
+                }
+            };
+
+            decimal total = 0;
+            foreach (Product prod in products.FilterByCategory("A")) {
+                total += prod.Price;
+            }
+
+            return View("Result", (object)String.Format("Total : {0}", total));
+        }
     }
 }
